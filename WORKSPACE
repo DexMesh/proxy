@@ -34,7 +34,7 @@ ENVOY_SHA = "de039269f54aa21aa0da21da89a5075aa3db3bb9"
 
 git_repository(
     name = "envoy",
-    remote = "https://github.com/zhaohuabing/envoy.git",
+    remote = "https://github.com/DexMesh/envoy.git",
     commit = "0a7d19417ade013fe6c71659b2d2cfd7134a6829",
 )    
 #http_archive(
