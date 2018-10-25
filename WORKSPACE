@@ -31,11 +31,12 @@ bind(
 
 # When updating envoy sha manually please update the sha in istio.deps file also
 ENVOY_SHA = "de039269f54aa21aa0da21da89a5075aa3db3bb9"
-
+#old commit="0a7d19417ade013fe6c71659b2d2cfd7134a6829"
+#new commit="1fddc481d8ba6b6d347e0a0bda0c539332f9b298" for MultiNetworkPlane
 git_repository(
     name = "envoy",
     remote = "https://github.com/DexMesh/envoy.git",
-    commit = "0a7d19417ade013fe6c71659b2d2cfd7134a6829",
+    commit = "1fddc481d8ba6b6d347e0a0bda0c539332f9b298",
 )    
 #http_archive(
 #    name = "envoy",
