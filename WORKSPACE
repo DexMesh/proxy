@@ -33,10 +33,11 @@ bind(
 ENVOY_SHA = "de039269f54aa21aa0da21da89a5075aa3db3bb9"
 #old commit="0a7d19417ade013fe6c71659b2d2cfd7134a6829"
 #new commit="1fddc481d8ba6b6d347e0a0bda0c539332f9b298" for MultiNetworkPlane
+#latest commit ="8a1941eeb032ace01d67aca7c6a1d935d23193f3" for ipv6 support
 git_repository(
     name = "envoy",
     remote = "https://github.com/DexMesh/envoy.git",
-    commit = "6af318d6bd510250026947efde0188ef7f8846ea",
+    commit = "8a1941eeb032ace01d67aca7c6a1d935d23193f3",
 )    
 #http_archive(
 #    name = "envoy",
