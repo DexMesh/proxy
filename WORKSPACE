@@ -16,6 +16,7 @@
 #
 workspace(name = "io_istio_proxy")
 
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 # http_archive is not a native function since bazel 0.19
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
 load(
@@ -149,4 +150,11 @@ http_file(
     urls = [
         "https://github.com/nlohmann/json/releases/download/v3.7.3/json.hpp",
     ],
+)
+
+# Trpc dependencies
+git_repository(
+    name = "trpc",
+    branch = "master",
+    remote = "git@github.com:zhaohuabing/private-trpc.git",
 )

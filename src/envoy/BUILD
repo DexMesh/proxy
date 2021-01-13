@@ -37,6 +37,8 @@ envoy_cc_binary(
         "//src/envoy/tcp/metadata_exchange:config_lib",
         "//src/envoy/tcp/sni_verifier:config_lib",
         "//src/envoy/tcp/tcp_cluster_rewrite:config_lib",
+        "@trpc//trpc",
+        "@trpc//trpc/health_checker",
         "@envoy//source/exe:envoy_main_entry_lib",
     ],
 )
