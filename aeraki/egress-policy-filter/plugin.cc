@@ -8,25 +8,25 @@
 namespace Envoy {
 namespace Filter {
 
-EgressPolicyFilter::EgressPolicyFilter(const ConfigSharedPtr config) : config_(config) {
-  http_parser_init(&parser_, HTTP_REQUEST);
-}
+const absl::string_view EgressPolicyFilter::HTTP2_CONNECTION_PREFACE = "PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n";
 
 http_parser_settings EgressPolicyFilter::settings_{
     nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
 };
 
 Network::FilterStatus EgressPolicyFilter::onData(Buffer::Instance& data, bool) {
-  ENVOY_CONN_LOG(error, "egress policy filter: got {} bytes", read_callbacks_->connection(), data.length());
+  http_parser_init(&parser_, HTTP_REQUEST);
+  ENVOY_CONN_LOG(error, "***egress policy filter: got {} bytes\n", read_callbacks_->connection(), data.length());
   //read_callbacks_->connection().write(data, false);
-  std::cerr << "********egress policy filter***********\n";
+  std::cerr << "********egress policy filter onData***********\n";
   
-  const auto parse_state =
+   std::cerr << "********data ***********" << data.toString() << "\n";
       parseHttpHeader(data.toString());
   return Network::FilterStatus::Continue;
 }
 
 ParseState EgressPolicyFilter::parseHttpHeader(absl::string_view data) {
+   std::cerr << "********data ***********" << data << "\n";
   const size_t len = std::min(data.length(), EgressPolicyFilter::HTTP2_CONNECTION_PREFACE.length());
   if (EgressPolicyFilter::HTTP2_CONNECTION_PREFACE.compare(0, len, data, 0, len) == 0) {
     if (data.length() < EgressPolicyFilter::HTTP2_CONNECTION_PREFACE.length()) {
@@ -53,10 +53,10 @@ ParseState EgressPolicyFilter::parseHttpHeader(absl::string_view data) {
       }
 
       if (parser_.http_major == 1 && parser_.http_minor == 1) {
-        protocol_ = Http::Headers::get().ProtocolStrings.Http11String;
+        protocol_ = "http1";//Http::Headers::get().ProtocolStrings.Http11String;
       } else {
         // Set other HTTP protocols to HTTP/1.0
-        protocol_ = Http::Headers::get().ProtocolStrings.Http10String;
+        protocol_ = "http0";//Http::Headers::get().ProtocolStrings.Http10String;
         std::cerr << "********egress policy filter HTTP1 ***********\n";
       }
       return ParseState::Done;
@@ -75,9 +75,5 @@ ParseState EgressPolicyFilter::parseHttpHeader(absl::string_view data) {
   }
 }
 
-Network::FilterStatus onNewConnection(){ 
-  std::cerr << "********egress policy filter onNewConnection***********";
-  return Network::FilterStatus::Continue; 
-}
 } // namespace Filter
 } // namespace Envoy

@@ -23,20 +23,19 @@ class EgressPolicyFilter : public Network::ReadFilter, Logger::Loggable<Logger::
 public:
   // Network::ReadFilter
   Network::FilterStatus onData(Buffer::Instance& data, bool end_stream) override;
-  Network::FilterStatus onNewConnection() override;
-  Network::FilterStatus onNewConnection() { 
-    std::cerr << "********egress policy filter onNewConnection***********";
-    return Network::FilterStatus::Continue; 
-  }
+  Network::FilterStatus onNewConnection() override { return Network::FilterStatus::Continue; }
   void initializeReadFilterCallbacks(Network::ReadFilterCallbacks& callbacks) override {
-    std::cerr << "********egress policy filter initializeReadFilterCallbacks***********";
+    read_callbacks_ = &callbacks;
   }
 
 private:
-  static const absl::string_view HTTP2_CONNECTION_PREFACE = "PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n";
+  Network::ReadFilterCallbacks* read_callbacks_{};
+
+  static const absl::string_view HTTP2_CONNECTION_PREFACE;
 
   ParseState parseHttpHeader(absl::string_view data);
 
+  absl::string_view protocol_;
   http_parser parser_;
   static http_parser_settings settings_;
 };

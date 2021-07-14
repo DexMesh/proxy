@@ -20,6 +20,7 @@ envoy_cc_library(
     name = "egress_policy_filter",
     srcs = ["plugin.cc"],
     hdrs = ["plugin.h"],
+    external_deps = ["http_parser"],
     repository = "@envoy",
     deps = [
         "@envoy//include/envoy/buffer:buffer_interface",

@@ -16,7 +16,6 @@ class EgressPolicyFilterConfigFactory : public NamedNetworkFilterConfigFactory {
 public:
   Network::FilterFactoryCb createFilterFactoryFromProto(const Protobuf::Message&,
                                                         FactoryContext&) override {
-     std::cerr << "********egress policy filter config***********";
     return [](Network::FilterManager& filter_manager) -> void {
       filter_manager.addReadFilter(Network::ReadFilterSharedPtr{new Filter::EgressPolicyFilter()});
     };
